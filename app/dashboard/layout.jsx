@@ -2,10 +2,17 @@ import Image from "next/image";
 import LogoBoven from "../asset/img/logo-boven.png";
 import React from 'react'
 import LeftSideBar from "../component/left-sidebar";
-import { LogOut } from "lucide-react";
 import Clock from "../component/clock";
+import LogoutButton from "../component/button/logout";
+import { cookies } from "next/headers";
 
-const DashboardLayout = ({children}) => {
+const DashboardLayout = async ({children}) => {
+
+  const cookieStore = await cookies()
+  const username = cookieStore.get('username')?.value
+  const namaInstansi = cookieStore.get('namaInstansi')?.value
+
+
   return (
     <div className="h-screen w-full overflow-hidden flex flex-row ">
         <div className="w-[250px] h-screen border-r-[1px] border-r-[#5c59f1] bg-primary">
@@ -37,18 +44,12 @@ const DashboardLayout = ({children}) => {
                     className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
                 >
                     
-                    <li >
-                        
-                        <a className="flex flex-row">
-                            <LogOut size={12} color="white" />
-                            <span>Keluar</span>
-                        </a>
-                    </li>
+                    <LogoutButton />
                 </ul>
                 </div>
-                <span>jefry</span>
+                <span>{username}</span>
             </div>
-            <span className="font-mono text-white">Dinas Pekerjaan Umum dan bla bla</span>
+            <span className="font-mono text-white">{namaInstansi}</span>
             <Clock />
           </div>
 

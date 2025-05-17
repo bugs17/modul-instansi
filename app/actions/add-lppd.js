@@ -5,8 +5,8 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 
-export const addProfile = async (file) => {
-    if (!file) {
+export const addLppd = async (file, ta) => {
+    if (!file || !ta) {
         return false
     }
 
@@ -15,15 +15,16 @@ export const addProfile = async (file) => {
 
     const formData = new FormData()
     formData.append("file", file)
+    formData.append("tahunAnggaran", ta)
 
-    const url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/admin-opd/add-profil-instansi/${instansiID}`
+    const url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/admin-opd/add-lppd/${instansiID}`
 
     try {
         const res = await axios.post(url, formData, {
             "Content-Type": "multipart/form-data",
         })
         if (res.status == 201) {
-            revalidatePath('/dashboard')
+            revalidatePath('/dashboard/lppd')
             return true
         }
 

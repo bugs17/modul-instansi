@@ -1,19 +1,19 @@
+import ButtonUpload from '@/app/component/button/button-upload'
 import ListLppd from '@/app/component/list-lppd'
-import { HardDriveUpload } from 'lucide-react'
-import Link from 'next/link'
+import ModalUploadLppd from '@/app/component/modal/modal-upload-lppd'
 import React from 'react'
 
 const Lppd = () => {
   return (
     <div className="h-full -z-20">
+    
         <div className="mb-4 w-full flex flex-row items-center justify-between">
         <div className="flex flex-row items-center gap-1">
             <span className='font-semibold text-[18px]'>LPPD</span>
         </div>
-        <Link href={'#'} className="btn btn-dash btn-accent">
-            <HardDriveUpload size={18} />
-            <span>Upload</span>
-        </Link>
+        <ButtonUpload idModal={'modal_upload_lppd'} >
+          <ModalUploadLppd idModal={'modal_upload_lppd'} />
+        </ButtonUpload>
         
         </div>
         <ListLppd />

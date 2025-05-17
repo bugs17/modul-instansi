@@ -3,6 +3,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { login } from "./actions/handle-login";
 
 export default function Home() {
 
@@ -25,7 +26,7 @@ export default function Home() {
                 const res = await axios.get(url, {
                     headers:{
                         'Content-Type': 'application/json',
-                    }
+                    },
                 })
                 if (res.status === 200) {
                     setInstansis(res.data.instansis)
@@ -39,33 +40,31 @@ export default function Home() {
     }, [])
 
     const handleSubmit = async (e) => {
+        setLoading(true)
         e.preventDefault()
         if (!selectedInstansi || !username || !password) {
             alert("Mohon lengkapi semua kolom terlebih dahul sebelum masuk 🥱")
+            setLoading(false)
             return
         }
         
         try {
-          const url = process.env.NEXT_PUBLIC_BACKEND_URL + "/api/admin-opd/login"
-          const data = {
-            username,
-            password,
-            instansiID:selectedInstansi
+          const res = await login(username,password, selectedInstansi)
+          if (res.statusResponse) {
+            localStorage.setItem('username', res.username);
+            localStorage.setItem('password', res.password);
+            localStorage.setItem('instansiId', res.instansiID);
+            localStorage.setItem('namaInstansi', res.namaInstansi);
+            localStorage.setItem('kategoriInstansi', res.kategoriInstansi);
+            router.push('/dashboard')
+          }else{
+            setErrorMsg("Gagal coba lagi 🥱")
           }
-          const response = await axios.post(url, data, {
-            headers:{
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-          })
-          if (response.status === 200) {
-            localStorage.setItem('username', response.data.username);
-            localStorage.setItem('password', response.data.password);
-            localStorage.setItem('instansiId', response.data.instansiID);
-            router.push('/admin-side/home')
-          }
+          
         } catch (error) {
-          setErrorMsg(error.response.data.message)
+          setErrorMsg("Gagal coba lagi")
+          setLoading(false)
+        }finally{
           setLoading(false)
         }
 
@@ -90,7 +89,7 @@ export default function Home() {
             <path
               d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
           </svg>
-          <input onChange={(e) => setUsername(e.target.value)} type="text" className="grow" placeholder="Username" />
+          <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" className="grow" placeholder="Username" />
         </label>
 
         <label className="input input-bordered flex items-center gap-2">
@@ -104,7 +103,7 @@ export default function Home() {
               d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
               clipRule="evenodd" />
           </svg>
-          <input onChange={(e) => setPassword(e.target.value)} type="password" className="grow" placeholder="Password" />
+          <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="grow" placeholder="Password" />
         </label>
 
         <label className="form-control  w-full max-w-xs">

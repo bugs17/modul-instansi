@@ -1,13 +1,15 @@
 import axios from 'axios'
 import { Check, Eye, Trash2, X } from 'lucide-react'
+import { cookies } from 'next/headers'
 import Link from 'next/link'
 import React from 'react'
 
 const ListProfil = async () => {
 
     let profil = null
-  const idInstansi = 1
-  const url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/admin-opd/get-profil-instansi/${idInstansi}`
+    const cookieStore = await cookies()
+    const instansiID = cookieStore.get('instansiID')?.value
+    const url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/admin-opd/get-profil-instansi/${instansiID}`
   
   try {
     
@@ -15,7 +17,6 @@ const ListProfil = async () => {
       headers:{
         'Content-Type': 'application/json',
       },
-      withCredentials:true
     })
     if (response.status === 200) {
       profil = response.data.instansi.profilUrl
@@ -38,8 +39,6 @@ const ListProfil = async () => {
                 <tr>
                 <td className="text-center">
                         <Check className='text-accent' size={18} />
-                </td>
-                <td className="text-center">
                 </td>
                 <td className="text-right p-2">
                     <div className="tooltip tooltip-left z-50 inline-block mr-4" data-tip="Lihat">
