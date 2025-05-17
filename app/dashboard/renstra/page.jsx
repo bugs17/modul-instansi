@@ -1,6 +1,6 @@
+import ButtonUpload from '@/app/component/button/button-upload'
 import ListRenstra from '@/app/component/list-renstra'
-import { HardDriveUpload } from 'lucide-react'
-import Link from 'next/link'
+import ModalUploadRenstra from '@/app/component/modal/modal-upload-renstra'
 import React from 'react'
 
 const Renstra = () => {
@@ -10,10 +10,9 @@ const Renstra = () => {
         <div className="flex flex-row items-center gap-1">
             <span className='font-semibold text-[18px]'>RENSTRA</span>
         </div>
-        <Link href={'#'} className="btn btn-dash btn-accent">
-            <HardDriveUpload size={18} />
-            <span>Upload</span>
-        </Link>
+        <ButtonUpload idModal={'modal_upload_renstra'} >
+          <ModalUploadRenstra idModal={'modal_upload_renstra'} />
+        </ButtonUpload>
         
         </div>
         <ListRenstra />

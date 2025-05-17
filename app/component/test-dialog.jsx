@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 export default function DialogPage() {
   const backdropRef = useRef(null);
 
+
   useEffect(() => {
     // Buka dialog otomatis saat halaman dimuat
     if (backdropRef.current) {

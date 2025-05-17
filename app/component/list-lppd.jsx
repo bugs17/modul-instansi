@@ -5,7 +5,7 @@ import ButtonActionLppd from './button/button-action-lppd'
 
 const ListLppd = async () => {
 
-    let listLpps = []
+    let listLppd = []
     const cookieStore = await cookies()
     const instansiID = cookieStore.get('instansiID')?.value
     const url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/admin-opd/get-list-lppd/${instansiID}`
@@ -17,7 +17,7 @@ const ListLppd = async () => {
             },
           })
           if (response.status === 200) {
-            listLpps = response.data.listLppd
+            listLppd = response.data.listLppd
           }
     } catch (error) {
         console.log("Error saat melakukan request list lppd ke backend")
@@ -34,8 +34,8 @@ const ListLppd = async () => {
             </tr>
             </thead>
             <tbody>
-            {listLpps.length > 0 ? (
-                listLpps.map((item, index) => (
+            {listLppd.length > 0 ? (
+                listLppd.map((item, index) => (
                     <tr key={index}>
                         <td className="text-left">
                                 <span>{index + 1}</span>

@@ -1,6 +1,6 @@
+import ButtonUpload from '@/app/component/button/button-upload'
 import ListRenja from '@/app/component/list-renja'
-import { HardDriveUpload } from 'lucide-react'
-import Link from 'next/link'
+import ModalUploadRenja from '@/app/component/modal/modal-upload-renja'
 import React from 'react'
 
 const Renja = () => {
@@ -10,13 +10,13 @@ const Renja = () => {
         <div className="flex flex-row items-center gap-1">
             <span className='font-semibold text-[18px]'>RENJA</span>
         </div>
-        <Link href={'#'} className="btn btn-dash btn-accent">
-            <HardDriveUpload size={18} />
-            <span>Upload</span>
-        </Link>
+        <ButtonUpload idModal={'modal_upload_renja'} >
+          <ModalUploadRenja idModal={'modal_upload_renja'} />
+        </ButtonUpload>
         
         </div>
         <ListRenja />
+
     </div>
   )
 }

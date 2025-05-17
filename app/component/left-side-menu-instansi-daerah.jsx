@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import React from "react";
 
 
-const LeftSideMenu = () => {
+const LeftSideMenuInstansiDaerah = () => {
   const pathName = usePathname();
   
 
@@ -106,4 +106,4 @@ const LeftSideMenu = () => {
 {
   /* <li><a>{menu.title}</a></li> */
 }
-export default LeftSideMenu;
+export default LeftSideMenuInstansiDaerah;

@@ -1,4 +1,7 @@
+import ButtonUpload from '@/app/component/button/button-upload'
 import ListLakip from '@/app/component/list-lakip'
+import ModalUploadDpa from '@/app/component/modal/modal-upload-dpa'
+import ModalUploadLakip from '@/app/component/modal/modal-upload-lakip'
 import { HardDriveUpload } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
@@ -10,10 +13,9 @@ const Lakip = () => {
         <div className="flex flex-row items-center gap-1">
             <span className='font-semibold text-[18px]'>LAKIP</span>
         </div>
-        <Link href={'#'} className="btn btn-dash btn-accent">
-            <HardDriveUpload size={18} />
-            <span>Upload</span>
-        </Link>
+        <ButtonUpload idModal={'modal_upload_lakip'} >
+          <ModalUploadLakip idModal={'modal_upload_lakip'} />
+        </ButtonUpload>
         
         </div>
         <ListLakip />

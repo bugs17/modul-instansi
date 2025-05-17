@@ -1,8 +1,28 @@
-import { Check, Eye, Trash2 } from 'lucide-react'
-import Link from 'next/link'
+import axios from 'axios'
+import { cookies } from 'next/headers'
 import React from 'react'
+import ButtonActionLakip from './button/button-action-lakip'
 
-const ListLakip = () => {
+const ListLakip = async () => {
+
+    let lakip = []
+    const cookieStore = await cookies()
+    const instansiID = cookieStore.get('instansiID')?.value
+    const url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/admin-opd/get-list-lakip/${instansiID}`
+
+    try {
+        const response = await axios.get(url,{
+            headers:{
+              'Content-Type': 'application/json',
+            },
+          })
+          if (response.status === 200) {
+            lakip = response.data.listLakip
+          }
+    } catch (error) {
+        console.log("Error saat melakukan request list lakip ke backend")
+    }
+
   return (
     <div className="h-full overflow-y-scroll pb-10 mt-6 ">
         <table className="table table-xs w-full bg-slate-600">
@@ -14,50 +34,38 @@ const ListLakip = () => {
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td className="text-left">
-                        <span>1</span>
-                </td>
-                <td className="text-center">
-                <div className="tooltip z-50" data-tip="Tahun anggaran">
-                    2025
-                </div>
-                </td>
-                <td className="text-right p-2">
-                    <div className="tooltip tooltip-left z-50 inline-block mr-4" data-tip="Lihat">
-                        <Link href={`#`}>
-                            <Eye className='text-accent' size={18} />
-                        </Link>
+            {lakip.length > 0 ? (
+                lakip.map((item, index) => (
+
+                <tr key={index}>
+                    <td className="text-left">
+                            <span>{index + 1}</span>
+                    </td>
+                    <td className="text-center">
+                    <div className="tooltip z-50" data-tip="Tahun anggaran LAKIP">
+                        {item.tahunAnggaran}
                     </div>
-                    <div className="tooltip tooltip-left z-50 inline-block" data-tip="Hapus">
-                        <Link href={`#`}>
-                            <Trash2 color="red" size={18} />
-                        </Link>
+                    </td>
+                    <td className="text-right p-2">
+                        <ButtonActionLakip idItem={item.id} />
+                    </td>
+                </tr>
+                ))
+            ) : (
+                <tr>
+                    <td className="text-left">
+                            <span>-</span>
+                    </td>
+                    <td className="text-center">
+                    <div className="tooltip z-50" data-tip="Tahun anggaran LAKIP">
+                        --
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <td className="text-left">
-                        <span>2</span>
-                </td>
-                <td className="text-center">
-                <div className="tooltip z-50" data-tip="Tahun anggaran">
-                    2024
-                </div>
-                </td>
-                <td className="text-right p-2">
-                    <div className="tooltip tooltip-left z-50 inline-block mr-4" data-tip="Lihat">
-                        <Link href={`#`}>
-                            <Eye className='text-accent' size={18} />
-                        </Link>
-                    </div>
-                    <div className="tooltip tooltip-left z-50 inline-block" data-tip="Hapus">
-                        <Link href={`#`}>
-                            <Trash2 color="red" size={18} />
-                        </Link>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                    <td className="text-right p-2">
+                        --
+                    </td>
+                </tr>
+            )}
             
             </tbody>
         </table>
