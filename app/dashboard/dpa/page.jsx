@@ -1,6 +1,6 @@
+import ButtonUpload from '@/app/component/button/button-upload'
 import ListDpa from '@/app/component/list-dpa'
-import { HardDriveUpload } from 'lucide-react'
-import Link from 'next/link'
+import ModalUploadDpa from '@/app/component/modal/modal-upload-dpa'
 import React from 'react'
 
 const Dpa = () => {
@@ -10,10 +10,9 @@ const Dpa = () => {
         <div className="flex flex-row items-center gap-1">
             <span className='font-semibold text-[18px]'>DPA</span>
         </div>
-        <Link href={'#'} className="btn btn-dash btn-accent">
-            <HardDriveUpload size={18} />
-            <span>Upload</span>
-        </Link>
+        <ButtonUpload idModal={'modal_upload_dpa'} >
+          <ModalUploadDpa idModal={'modal_upload_dpa'} />
+        </ButtonUpload>
         
         </div>
         <ListDpa />

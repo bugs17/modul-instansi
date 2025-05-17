@@ -1,8 +1,7 @@
 import axios from 'axios'
-import { Eye, Trash2 } from 'lucide-react'
 import { cookies } from 'next/headers'
-import Link from 'next/link'
 import React from 'react'
+import ButtonActionLppd from './button/button-action-lppd'
 
 const ListLppd = async () => {
 
@@ -47,16 +46,7 @@ const ListLppd = async () => {
                         </div>
                         </td>
                         <td className="text-right p-2">
-                            <div className="tooltip tooltip-left z-50 inline-block mr-4" data-tip="Lihat">
-                                <Link href={`#`}>
-                                    <Eye className='text-accent' size={18} />
-                                </Link>
-                            </div>
-                            <div className="tooltip tooltip-left z-50 inline-block" data-tip="Hapus">
-                                <Link href={`#`}>
-                                    <Trash2 color="red" size={18} />
-                                </Link>
-                            </div>
+                            <ButtonActionLppd idItem={item.id} />
                         </td>
                     </tr>
 

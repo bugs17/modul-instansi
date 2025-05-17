@@ -1,8 +1,31 @@
-import { Check, Eye, Trash2 } from 'lucide-react'
+import axios from 'axios'
+import {  Eye, Trash2 } from 'lucide-react'
+import { cookies } from 'next/headers'
 import Link from 'next/link'
 import React from 'react'
+import ButtonActionDpa from './button/button-action-dpa'
 
-const ListDpa = () => {
+const ListDpa = async () => {
+
+    let dpa = []
+    const cookieStore = await cookies()
+    const instansiID = cookieStore.get('instansiID')?.value
+    const url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/admin-opd/get-list-dpa/${instansiID}`
+
+    try {
+        const response = await axios.get(url,{
+            headers:{
+              'Content-Type': 'application/json',
+            },
+          })
+          if (response.status === 200) {
+            dpa = response.data.listDpa
+          }
+    } catch (error) {
+        console.log("Error saat melakukan request list dpa ke backend")
+    }
+
+
   return (
     <div className="h-full overflow-y-scroll pb-10 mt-6 ">
         <table className="table table-xs w-full bg-slate-600">
@@ -14,50 +37,39 @@ const ListDpa = () => {
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td className="text-left">
-                        <span>1</span>
-                </td>
-                <td className="text-center">
-                <div className="tooltip z-50" data-tip="Tahun anggaran DPA">
-                    2025
-                </div>
-                </td>
-                <td className="text-right p-2">
-                    <div className="tooltip tooltip-left z-50 inline-block mr-4" data-tip="Lihat">
-                        <Link href={`#`}>
-                            <Eye className='text-accent' size={18} />
-                        </Link>
+            {dpa.length > 0 ? (
+                dpa.map((item, index) => (
+
+                <tr key={index}>
+                    <td className="text-left">
+                            <span>{index + 1}</span>
+                    </td>
+                    <td className="text-center">
+                    <div className="tooltip z-50" data-tip="Tahun anggaran DPA">
+                        {item.tahunAnggaran}
                     </div>
-                    <div className="tooltip tooltip-left z-50 inline-block" data-tip="Hapus">
-                        <Link href={`#`}>
-                            <Trash2 color="red" size={18} />
-                        </Link>
+                    </td>
+                    <td className="text-right p-2">
+                        <ButtonActionDpa idItem={item.id} />
+                    </td>
+                </tr>
+                ))
+            ) : (
+                <tr>
+                    <td className="text-left">
+                            <span>-</span>
+                    </td>
+                    <td className="text-center">
+                    <div className="tooltip z-50" data-tip="Tahun anggaran DPA">
+                        --
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <td className="text-left">
-                        <span>2</span>
-                </td>
-                <td className="text-center">
-                <div className="tooltip z-50" data-tip="Tahun anggaran DPA">
-                    2024
-                </div>
-                </td>
-                <td className="text-right p-2">
-                    <div className="tooltip tooltip-left z-50 inline-block mr-4" data-tip="Lihat">
-                        <Link href={`#`}>
-                            <Eye className='text-accent' size={18} />
-                        </Link>
-                    </div>
-                    <div className="tooltip tooltip-left z-50 inline-block" data-tip="Hapus">
-                        <Link href={`#`}>
-                            <Trash2 color="red" size={18} />
-                        </Link>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                    <td className="text-right p-2">
+                        --
+                    </td>
+                </tr>
+            )}
+            
             
             </tbody>
         </table>
