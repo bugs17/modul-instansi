@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3031:3000'
+      # - '5529:5555' #image module instansi tidak menggunakan DB karena ini full frontend
+    # volumes:
+    #   - ./realDb:/app/realDb
+    #   - ./uploads:/app/uploads
+    command: "npm run start"
+    restart: always
